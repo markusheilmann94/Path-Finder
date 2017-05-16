@@ -45,33 +45,33 @@ public class Walgorithmus {
 		
 		int[][] matrix = new int[img.getHeight()][img.getWidth()];
 		
-		
-		
+		for(int i = 0 ; i < img.getHeight()/pixelBreiteDesBlocks ; i++) {
+			for(int j = 0 ; j < img.getHeight()/pixelBreiteDesBlocks ; j++) {
+			
+				for(int iblock = 0 ; iblock < pixelBreiteDesBlocks ; iblock++) {
+					for(int jblock = 0 ; jblock < pixelBreiteDesBlocks ; jblock++) {
+							
+						if(m[i][j] == -1) {
+							
+							matrix[i * pixelBreiteDesBlocks + iblock ][j * pixelBreiteDesBlocks + jblock ] = 0;
+							
+						}
+						else {
+							
+							matrix[i * pixelBreiteDesBlocks + iblock ][j * pixelBreiteDesBlocks + jblock ] = 1;
+							
+						}
+	
+					}			
+				}
+			
+			}
+		}
 		
 		return matrix;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public boolean step(int stepCount) {
 		
