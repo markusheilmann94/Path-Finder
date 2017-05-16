@@ -43,7 +43,7 @@ public class App extends JFrame {
 		setLayout(new BorderLayout());
 
 		JMenuBar bar = new JMenuBar();
-		JMenu menu = new JMenu("Menü");
+		JMenu menu = new JMenu("Menu");
 		
 		JMenuItem load = new JMenuItem("Load");
 		final JFrame tmpframe = this;
