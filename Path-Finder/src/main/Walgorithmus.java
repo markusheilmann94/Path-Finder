@@ -35,6 +35,7 @@ public class Walgorithmus {
 	public double[][] step(int stepCount) {
 		
 		PathPoint currentPoint;
+		boolean atEnd;
 		
 		for(int i = 0 ; i < stepCount ; i++) {
 			
