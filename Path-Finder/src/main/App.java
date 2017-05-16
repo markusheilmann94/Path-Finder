@@ -73,10 +73,10 @@ public class App extends JFrame {
 		});
 		menu.add(load);
 		
-		JMenuItem item = new JMenuItem("ThresoldFilter");
-		menu.add(item);
+		JMenuItem thresold = new JMenuItem("ThresoldFilter");
+		menu.add(thresold);
 		
-		item = new JMenuItem("Start");
+		JMenuItem item = new JMenuItem("Start");
 		menu.add(item);
 		
 		menu.addSeparator();
