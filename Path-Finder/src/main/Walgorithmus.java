@@ -40,14 +40,47 @@ public class Walgorithmus {
 		
 	}
 	
-	public double[][] step(int stepCount) {
+	
+	public int[][] draw() {
+		
+		int[][] matrix = new int[img.getHeight()][img.getWidth()];
+		
+		
+		
+		
+		return matrix;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public boolean step(int stepCount) {
 		
 		PathPoint currentPoint;
 		boolean notAtEnd = true;
 		
 		for(int i = 0 ; i < stepCount ; i++) {
 			
-			if(notAtEnd) {
+			if( notAtEnd && open.size() != 0 ) {
 				
 				currentPoint = open.get(0);
 			
@@ -80,23 +113,26 @@ public class Walgorithmus {
 										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2);
 									}
 								
-									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  Math.sqrt( (endx - currentPoint.getx() + blockX - 1 )^2 + (endy - currentPoint.gety() + blockY - 1 )^2) ) );
+									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  Math.sqrt( (endx - currentPoint.getx() + blockX - 1 )^2 + (endy - currentPoint.gety() + blockY - 1 )^2) * 2 ) );
 										
 							}
 			
 						}
 					}	
+									
+					open.remove(currentPoint);
+					
 				}
+								
 			}
 			else {
 				break;
 			}
 			
 		}
-
-		return m;
 		
-		
+		return !notAtEnd || open.size() == 0;
+				
 	}
 	
 	
