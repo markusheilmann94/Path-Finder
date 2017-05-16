@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
+import main.filter.Threshold;
+
 public class App extends JFrame {
 
 	private static final long serialVersionUID = 192323L;
@@ -30,6 +32,7 @@ public class App extends JFrame {
 	private ImagePanel sourceImage;
 	private ImagePanel targetImage;
 	private ImageFilterCtrl ctrl;
+	private BufferedImage image;
 	
 	public App() {
 		super("Path Finder");
@@ -66,14 +69,23 @@ public class App extends JFrame {
 				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				if(fc.showOpenDialog(tmpframe) == JFileChooser.APPROVE_OPTION) {
 					File f = fc.getSelectedFile();
-					BufferedImage img = loadImage(f);
-					ctrl.loadImage(img);
+					image = loadImage(f);
+					ctrl.loadImage(image);
 				}
 			}
 		});
 		menu.add(load);
 		
 		JMenuItem thresold = new JMenuItem("ThresoldFilter");
+		thresold.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Threshold t = new Threshold();
+				image = t.thImage(image, 127);
+				ctrl.loadImage(image);
+			}
+		});
 		menu.add(thresold);
 		
 		JMenuItem item = new JMenuItem("Start");
