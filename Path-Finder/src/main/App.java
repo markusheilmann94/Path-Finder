@@ -32,7 +32,7 @@ public class App extends JFrame {
 	private ImagePanel sourceImage;
 	private ImagePanel targetImage;
 	private ImageFilterCtrl ctrl;
-	private BufferedImage image;
+	private BufferedImage source;
 	
 	public App() {
 		super("Path Finder");
@@ -69,8 +69,8 @@ public class App extends JFrame {
 				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				if(fc.showOpenDialog(tmpframe) == JFileChooser.APPROVE_OPTION) {
 					File f = fc.getSelectedFile();
-					image = loadImage(f);
-					ctrl.loadImage(image);
+					source = loadImage(f);
+					ctrl.loadImage(source);
 				}
 			}
 		});
@@ -82,8 +82,7 @@ public class App extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Threshold t = new Threshold();
-				image = t.thImage(image, 127);
-				ctrl.loadImage(image);
+				ctrl.applyFilter(t, 127);
 			}
 		});
 		menu.add(thresold);
@@ -93,8 +92,17 @@ public class App extends JFrame {
 		
 		menu.addSeparator();
 		
-		item = new JMenuItem("Exit");
-		menu.add(item);
+		JMenuItem exit = new JMenuItem("Exit");
+		exit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setEnabled(false);
+				dispose();
+			}
+			
+		});
+		menu.add(exit);
 		bar.add(menu);
 		
 		JPanel imagingPanel = new JPanel();
