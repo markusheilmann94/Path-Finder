@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Properties;
 
+import main.filter.Threshold;
+
 /**
  * Controls the Image Filter app
  * 
@@ -49,13 +51,13 @@ public class ImageFilterCtrl {
 		target.loadImage(scaled);
 	}
 	
-	/** Applies a filter to the loaded source image and shows the generated image in the target panel *//*
-	public void applyFilter(FilterInterface f, Properties p) {
-		filtered = f.runFilter(scaled, p);
+	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
+	public void applyFilter(Threshold t, int thresold) {
+		filtered = t.thImage(scaled, thresold);
 		target.loadImage(filtered);
 	}
 
-	*//** Sets filtered image as source image in order to apply further filters *//*
+	/** Sets filtered image as source image in order to apply further filters *//*
 	public void setTargetAsSource() {
 		scaled = target.getBufferedImage();
 		source.loadImage(scaled);
