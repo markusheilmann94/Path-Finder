@@ -88,6 +88,12 @@ public class App extends JFrame {
 		menu.add(thresold);
 		
 		JMenuItem item = new JMenuItem("Start");
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ctrl.applyWalg(0, 0, 100, 100, 3, 10);
+			}
+		});
 		menu.add(item);
 		
 		menu.addSeparator();

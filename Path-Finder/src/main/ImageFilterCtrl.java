@@ -16,9 +16,7 @@ public class ImageFilterCtrl {
 
 	private ImagePanel source, target;
 	
-	private BufferedImage scaled;
-	
-	private Image filtered;
+	private BufferedImage scaled, filtered;
 	
 	/** Creates new controller */
 	public ImageFilterCtrl(ImagePanel source, ImagePanel target) {
@@ -57,6 +55,15 @@ public class ImageFilterCtrl {
 		target.loadImage(filtered);
 	}
 
+	public void applyWalg(int sx, int sy, int ex, int ey, int pb, int stepCount) {
+		Walgorithmus w = new Walgorithmus(filtered, sx, sy, ex, ey, pb);
+		int [][] matrix;
+		
+		while(!w.step(stepCount)) {
+			matrix = w.draw();
+		}
+		//target.loadImage(img);
+	}
 	/** Sets filtered image as source image in order to apply further filters *//*
 	public void setTargetAsSource() {
 		scaled = target.getBufferedImage();

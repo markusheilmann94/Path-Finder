@@ -15,17 +15,18 @@ public class Walgorithmus {
 	public Walgorithmus( BufferedImage image , int sx , int sy , int ex , int ey , int pb ) {
 		
 		img = image;
+		pixelBreiteDesBlocks = pb;
 		startx = sx/pixelBreiteDesBlocks;
 		starty = sy/pixelBreiteDesBlocks;
 		endx = ex/pixelBreiteDesBlocks;
 		endx = ey/pixelBreiteDesBlocks;
-		pixelBreiteDesBlocks = pb;
+		
 	
 		
 		m = new double[img.getHeight()/pixelBreiteDesBlocks][img.getWidth()/pixelBreiteDesBlocks];
 		
 		for(int i = 0 ; i < img.getHeight()/pixelBreiteDesBlocks ; i++) {
-			for(int j = 0 ; j < img.getHeight()/pixelBreiteDesBlocks ; j++) {
+			for(int j = 0 ; j < img.getWidth()/pixelBreiteDesBlocks ; j++) {
 			
 				m[i][j] = -1;
 			
@@ -34,7 +35,7 @@ public class Walgorithmus {
 		
 		m[starty][startx] = 0;
 			
-		List<PathPoint> open = new ArrayList<>();
+		open = new ArrayList<>();
 		
 		open.add(new PathPoint(startx,starty, Math.sqrt( (endx - startx)^2 + (endy - starty)^2))); // Startpunkt
 		
