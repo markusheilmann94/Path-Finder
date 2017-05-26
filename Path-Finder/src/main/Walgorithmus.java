@@ -19,7 +19,7 @@ public class Walgorithmus {
 		startx = sx/pixelBreiteDesBlocks;
 		starty = sy/pixelBreiteDesBlocks;
 		endx = ex/pixelBreiteDesBlocks;
-		endx = ey/pixelBreiteDesBlocks;
+		endy = ey/pixelBreiteDesBlocks;
 		
 	
 		
@@ -37,36 +37,32 @@ public class Walgorithmus {
 			
 		open = new ArrayList<>();
 		
-		open.add(new PathPoint(startx,starty, Math.sqrt( (endx - startx)^2 + (endy - starty)^2))); // Startpunkt
+		open.add(new PathPoint(startx,starty, Math.sqrt( Math.pow((endx - startx), 2) + Math.pow((endy - starty), 2)) ) ); // Startpunkt
 		
+	
 	}
 	
 	
-	public int[][] draw() {
+	public int[][] draw( BufferedImage image2 ) {
 		
 		int[][] matrix = new int[img.getHeight()][img.getWidth()];
 		
-		for(int i = 0 ; i < img.getHeight()/pixelBreiteDesBlocks ; i++) {
-			for(int j = 0 ; j < img.getHeight()/pixelBreiteDesBlocks ; j++) {
+		System.out.println(m[0].length + " " + m.length);
+		
+		for(int i = 0 ; i < 20 ; i++) {
+			for(int j = 0 ; j < 20 ; j++) {
 			
-				for(int iblock = 0 ; iblock < pixelBreiteDesBlocks ; iblock++) {
-					for(int jblock = 0 ; jblock < pixelBreiteDesBlocks ; jblock++) {
-							
-						if(m[i][j] == -1) {
-							
-							matrix[i * pixelBreiteDesBlocks + iblock ][j * pixelBreiteDesBlocks + jblock ] = 0;
-							
-						}
-						else {
-							
-							matrix[i * pixelBreiteDesBlocks + iblock ][j * pixelBreiteDesBlocks + jblock ] = 1;
-							
-						}
-	
-					}			
+				if( i == endy && j == endx) {
+					
+					System.out.print(" point ");
+					
+				}
+				else {
+					System.out.format("%7.4f ", m[i][j]);
 				}
 			
 			}
+			System.out.println("  ");
 		}
 		
 		return matrix;
@@ -86,7 +82,7 @@ public class Walgorithmus {
 				currentPoint = open.get(0);
 			
 				for(PathPoint point : open){
-					if( ( currentPoint.getcostRemaningDirectWay() + m[currentPoint.gety()][currentPoint.getx()] ) > point.getcostRemaningDirectWay() + m[currentPoint.gety()][currentPoint.getx()] ) {
+					if( ( currentPoint.getcostRemaningDirectWay() + m[currentPoint.gety()][currentPoint.getx()] ) > (point.getcostRemaningDirectWay() + m[point.gety()][point.getx()]) ) {
 						currentPoint = point;
 					}
 				
@@ -101,8 +97,8 @@ public class Walgorithmus {
 					
 					for(int blockY = 0 ; blockY < 3 ; blockY++ ) {
 						for(int blockX = 0 ; blockX < 3 ; blockX++ ) {
-					
-							if( walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] == -1 ) {
+							
+							if( (currentPoint.getx() + blockX - 1) >= 0 && (currentPoint.getx() + blockX - 1) < m[0].length && (currentPoint.gety() + blockY - 1) >= 0 && (currentPoint.gety() + blockY - 1) < m[0].length && walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] == -1  ) {
 										
 									if(blockY == 1 || blockX ==1 ) {
 								
@@ -114,8 +110,8 @@ public class Walgorithmus {
 										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2);
 									}
 								
-									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  Math.sqrt( (endx - currentPoint.getx() + blockX - 1 )^2 + (endy - currentPoint.gety() + blockY - 1 )^2) * 2 ) );
-										
+									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  ( Math.sqrt( Math.pow((endx - (currentPoint.getx() + blockX - 1 ) ), 2) + Math.pow((endy - (currentPoint.gety() + blockY - 1 ) ), 2) ) * 1 ) ) );
+									
 							}
 			
 						}

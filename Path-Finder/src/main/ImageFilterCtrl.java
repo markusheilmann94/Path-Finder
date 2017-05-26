@@ -57,10 +57,13 @@ public class ImageFilterCtrl {
 
 	public void applyWalg(int sx, int sy, int ex, int ey, int pb, int stepCount) {
 		Walgorithmus w = new Walgorithmus(filtered, sx, sy, ex, ey, pb);
-		int [][] matrix;
+		int [][] matrix = new int[filtered.getHeight()][filtered.getWidth()];
 		
 		while(!w.step(stepCount)) {
-			matrix = w.draw();
+		
+			matrix = w.draw(new BufferedImage( 100 , 100 ,BufferedImage.TYPE_INT_ARGB) );
+			
+			System.out.println();
 		}
 		//target.loadImage(img);
 	}
