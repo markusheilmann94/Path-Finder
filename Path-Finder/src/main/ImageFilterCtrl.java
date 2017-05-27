@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import main.filter.Threshold;
 
@@ -16,7 +17,7 @@ public class ImageFilterCtrl {
 
 	private ImagePanel source, target;
 	
-	private BufferedImage scaled, filtered;
+	private BufferedImage scaled, filtered , dImage;
 	
 	/** Creates new controller */
 	public ImageFilterCtrl(ImagePanel source, ImagePanel target) {
@@ -60,9 +61,10 @@ public class ImageFilterCtrl {
 		int [][] matrix = new int[filtered.getHeight()][filtered.getWidth()];
 		
 		while(!w.step(stepCount)) {
+			//new BufferedImage( filtered.getWidth() , filtered.getHeight() , BufferedImage.TYPE_INT_ARGB)
+			dImage = w.draw( filtered );
+			target.loadImage( dImage );
 		
-			matrix = w.draw(new BufferedImage( 100 , 100 ,BufferedImage.TYPE_INT_ARGB) );
-			
 			System.out.println();
 		}
 		//target.loadImage(img);

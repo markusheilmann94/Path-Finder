@@ -91,7 +91,7 @@ public class App extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ctrl.applyWalg(0, 0, 40, 40, 3, 1);
+				ctrl.applyWalg(0, 0, 400 , 400 , 3, 10);
 			}
 		});
 		menu.add(item);

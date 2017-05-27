@@ -43,32 +43,45 @@ public class Walgorithmus {
 	}
 	
 	
-	public int[][] draw( BufferedImage image2 ) {
-		
-		int[][] matrix = new int[img.getHeight()][img.getWidth()];
-		
-		System.out.println(m[0].length + " " + m.length);
-		
-		for(int i = 0 ; i < 20 ; i++) {
-			for(int j = 0 ; j < 20 ; j++) {
+	public BufferedImage draw( BufferedImage image ) {
+				
+		for(int i = 0 ; i < image.getHeight()/pixelBreiteDesBlocks ; i++) {
+			for(int j = 0 ; j < image.getWidth()/pixelBreiteDesBlocks ; j++) {
 			
-				if( i == endy && j == endx) {
+				if( m[i][j] >=0 ) {
 					
-					System.out.print(" point ");
+					for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
+						for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
+						
+							image.setRGB( ( j * pixelBreiteDesBlocks + blockX ) , ( i * pixelBreiteDesBlocks + blockY ) , 0xFFFF1111 );
 					
+						}
+					}
 				}
-				else {
-					System.out.format("%7.4f ", m[i][j]);
-				}
-			
-			}
-			System.out.println("  ");
+			}	
 		}
 		
-		return matrix;
+		return image;
 	}
 	
-
+	public BufferedImage drawPath( BufferedImage img ) {
+		
+		
+		
+		
+		
+		
+		
+		return img;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public boolean step(int stepCount) {
 		
