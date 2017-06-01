@@ -94,7 +94,7 @@ public class Walgorithmus {
 				for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
 					for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
 				
-						img.setRGB( ( x * pixelBreiteDesBlocks + blockX ) , ( y * pixelBreiteDesBlocks + blockY ) , 0xFF1111FF );
+						img.setRGB( ( x * pixelBreiteDesBlocks + blockX ) , ( y * pixelBreiteDesBlocks + blockY ) , 0xFF11FF11 );
 			
 					}
 				}
@@ -104,7 +104,7 @@ public class Walgorithmus {
 						
 						if( (y + mY -1) >= 0 && (y + mY -1) < m.length && (x + mX -1) >= 0 && (x + mX -1) < m[0].length && !( (mY == 1) && (mX == 1) ) ) {
 							
-							if( m[ y + mY -1 ][ x + mX -1 ] < m[nexty][nextx] ) {
+							if( ( m[ y + mY -1 ][ x + mX -1 ] >= 0 ) && ( m[ y + mY -1 ][ x + mX -1 ] < m[nexty][nextx] ) ) {
 								
 								nextx = x + mX -1;
 								nexty = y + mY -1;
