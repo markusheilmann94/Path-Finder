@@ -50,6 +50,7 @@ public class ImagePanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.white);
 		g2d.fillRect(0, 0, dim.width, dim.height);
@@ -66,5 +67,11 @@ public class ImagePanel extends JPanel{
 	 */
 	public BufferedImage getBufferedImage() {
 		return img;
+	}
+	
+	public void setBufferedImage(BufferedImage img) {
+		this.img = img;
+		revalidate();
+		repaint();
 	}
 }
