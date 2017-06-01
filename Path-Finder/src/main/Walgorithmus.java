@@ -61,13 +61,67 @@ public class Walgorithmus {
 			}	
 		}
 		
+		
+		for(PathPoint point : open) {
+			
+			
+			
+			for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
+				for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
+				
+					image.setRGB( ( point.getx() * pixelBreiteDesBlocks + blockX ) , ( point.gety() * pixelBreiteDesBlocks + blockY ) , 0xFF1111FF );
+			
+				}
+			}
+			
+		}	
+		
 		return image;
 	}
 	
 	public BufferedImage drawPath( BufferedImage img ) {
 		
+				
+		if( foundPath() ) {
+			
+			int x = endx;
+			int y = endy;
+			int nextx = x;
+			int nexty = y;
+				
+			while( x != startx && y != starty ) {
+						
+				for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
+					for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
+				
+						img.setRGB( ( x * pixelBreiteDesBlocks + blockX ) , ( y * pixelBreiteDesBlocks + blockY ) , 0xFF1111FF );
+			
+					}
+				}
+				
+				for(int mY = 0 ; mY < 3 ; mY++) {		
+					for(int mX = 0 ; mX < 3 ; mX++) {
+						
+						if( (y + mY -1) >= 0 && (y + mY -1) < m.length && (x + mX -1) >= 0 && (x + mX -1) < m[0].length && !( (mY == 1) && (mX == 1) ) ) {
+							
+							if( m[ y + mY -1 ][ x + mX -1 ] < m[nexty][nextx] ) {
+								
+								nextx = x + mX -1;
+								nexty = y + mY -1;
+							}
+							
+						}
+						
+						
+						
+					}
+				}
+				
+				x = nextx;
+				y = nexty;			
+			}	
 		
-		
+		}
 		
 		
 		
@@ -77,6 +131,20 @@ public class Walgorithmus {
 	
 	
 	
+	
+	public boolean foundPath() {
+		
+		boolean p = false;
+		
+		if( m[endy][endx] >= 0 ) {
+			
+			p = true;
+			
+		}
+		
+		return p;
+		
+	}
 	
 	
 	
@@ -158,7 +226,7 @@ public class Walgorithmus {
 					
 				p = img.getRGB( ( x * pixelBreiteDesBlocks + j ) , ( y * pixelBreiteDesBlocks + i ) );
 					
-				if( p != 0xFFFFFFFF) {
+				if( p == 0xFF000000) {
 					w = false;	
 				}
 							
