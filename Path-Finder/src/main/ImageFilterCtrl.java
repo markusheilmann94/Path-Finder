@@ -3,8 +3,6 @@ package main;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import main.filter.Threshold;
 
@@ -56,19 +54,20 @@ public class ImageFilterCtrl {
 		target.loadImage(filtered);
 	}
 
-	public void applyWalg(int sx, int sy, int ex, int ey, int pb, int stepCount) {
-		Walgorithmus w = new Walgorithmus(filtered, sx, sy, ex, ey, pb);
-		int [][] matrix = new int[filtered.getHeight()][filtered.getWidth()];
+	public void applyWalg(Walgorithmus w) {
+		dImage = w.draw(filtered);
+		target.setBufferedImage(dImage);
 		
-		while(!w.step(stepCount)) {
-			//new BufferedImage( filtered.getWidth() , filtered.getHeight() , BufferedImage.TYPE_INT_ARGB)
-			dImage = w.draw( filtered );
-			target.loadImage( dImage );
-		
-			System.out.println();
-		}
-		//target.loadImage(img);
 	}
+	
+	public BufferedImage getFiltered() {
+		return filtered;
+	}
+	
+	public ImagePanel getImageTarget() {
+		return target;
+	}
+	
 	/** Sets filtered image as source image in order to apply further filters *//*
 	public void setTargetAsSource() {
 		scaled = target.getBufferedImage();

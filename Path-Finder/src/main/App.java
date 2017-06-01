@@ -14,18 +14,21 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
 import main.filter.Threshold;
 
-public class App extends JFrame {
+public class App extends JFrame{
 
 	private static final long serialVersionUID = 192323L;
 	public static final Dimension PANEL_SIZES = new Dimension(600,600);
@@ -33,6 +36,7 @@ public class App extends JFrame {
 	private ImagePanel targetImage;
 	private ImageFilterCtrl ctrl;
 	private BufferedImage source;
+	private Walgorithmus walg;
 	
 	public App() {
 		super("Path Finder");
@@ -50,6 +54,7 @@ public class App extends JFrame {
 		
 		JMenuItem load = new JMenuItem("Load");
 		final JFrame tmpframe = this;
+		
 		load.addActionListener(new ActionListener() {
 
 			@Override
@@ -91,9 +96,20 @@ public class App extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ctrl.applyWalg(0, 0, 400 , 400 , 3, 10);
+				walg = new Walgorithmus(ctrl.getFiltered(), 0, 0, 400, 400, 3);
+				Timer timer = new Timer(1000, new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+		            	while(!walg.step(10)) {
+							ctrl.applyWalg(walg);
+						}
+		            }
+		        });
+				
+		        timer.start();
 			}
 		});
+		
 		menu.add(item);
 		
 		menu.addSeparator();
