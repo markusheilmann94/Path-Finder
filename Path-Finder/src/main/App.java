@@ -2,6 +2,7 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -141,6 +142,16 @@ public class App extends JFrame{
 		imagingPanel.add(b);
 		
 		getContentPane().add(imagingPanel, BorderLayout.CENTER);
+		
+		JPanel legende = new JPanel();
+		JLabel label = new JLabel(new ImageIcon("Legende (1).png"));
+		legende.setLayout(new BoxLayout(legende, BoxLayout.X_AXIS));
+		
+		Box l = Box.createVerticalBox();
+		l.add(label);
+		
+		legende.add(l);
+		getContentPane().add(legende, BorderLayout.SOUTH);
 	}
 	
 	public BufferedImage loadImage(InputStream stream) {
