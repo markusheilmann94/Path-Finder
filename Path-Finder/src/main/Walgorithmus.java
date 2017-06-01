@@ -191,7 +191,7 @@ public class Walgorithmus {
 										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2);
 									}
 								
-									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  ( Math.sqrt( Math.pow((endx - (currentPoint.getx() + blockX - 1 ) ), 2) + Math.pow((endy - (currentPoint.gety() + blockY - 1 ) ), 2) ) * 1 ) ) );
+									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  ( Math.sqrt( Math.pow((endx - (currentPoint.getx() + blockX - 1 ) ), 2) + Math.pow((endy - (currentPoint.gety() + blockY - 1 ) ), 2) ) * 0.5 ) ) );
 									
 							}
 			
