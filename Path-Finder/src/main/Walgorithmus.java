@@ -89,7 +89,7 @@ public class Walgorithmus {
 			int nextx = x;
 			int nexty = y;
 				
-			while( x != startx && y != starty ) {
+			while( !(x == startx && y == starty) ) {
 						
 				for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
 					for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
@@ -129,6 +129,27 @@ public class Walgorithmus {
 		return img;
 	}
 	
+	
+	
+	private boolean inOpen( int x , int y ) {
+		
+		boolean includet = false;
+		
+		for(PathPoint point : open){
+		
+			if( ( point.getx() == x ) && ( point.gety() == y ) ){
+				
+				includet = true;
+				
+			}
+		
+		
+		
+		}
+		
+		return includet;
+		
+	}
 	
 	
 	
@@ -179,19 +200,30 @@ public class Walgorithmus {
 					for(int blockY = 0 ; blockY < 3 ; blockY++ ) {
 						for(int blockX = 0 ; blockX < 3 ; blockX++ ) {
 							
-							if( (currentPoint.getx() + blockX - 1) >= 0 && (currentPoint.getx() + blockX - 1) < m[0].length && (currentPoint.gety() + blockY - 1) >= 0 && (currentPoint.gety() + blockY - 1) < m[0].length && walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] == -1  ) {
-										
-									if(blockY == 1 || blockX ==1 ) {
+							if( (currentPoint.getx() + blockX - 1) >= 0 && (currentPoint.getx() + blockX - 1) < m[0].length && (currentPoint.gety() + blockY - 1) >= 0 && (currentPoint.gety() + blockY - 1) < m[0].length && walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && ( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || inOpen( ( currentPoint.getx() + blockX - 1 ) , ( currentPoint.gety() + blockY - 1 ) ) ) ) {
 								
+								if(  m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0  ) {
+									
+									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  ( Math.sqrt( Math.pow((endx - (currentPoint.getx() + blockX - 1 ) ), 2) + Math.pow((endy - (currentPoint.gety() + blockY - 1 ) ), 2) ) * 1 ) ) );
+									
+								}
+								
+								if(blockY == 1 || blockX ==1 ) {
+								
+									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + 1 ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) ) ) {
 										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + 1;
-								
 									}
-									else {
 								
+								}
+								else {
+									
+									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2) ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) )) {
 										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2);
 									}
+									
+								}
 								
-									open.add(new PathPoint( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 ,  ( Math.sqrt( Math.pow((endx - (currentPoint.getx() + blockX - 1 ) ), 2) + Math.pow((endy - (currentPoint.gety() + blockY - 1 ) ), 2) ) * 0.5 ) ) );
+									
 									
 							}
 			
