@@ -154,7 +154,7 @@ public class ImageFilterCtrl {
 		target.loadImage(filtered);
 	}
 
-	public void applyWalg(Walgorithmus w) {
+	public void applyWalg(Walgorithmus w, int value) {
 		BufferedImage test = new BufferedImage(filtered.getWidth(), filtered.getHeight(), filtered.getType());
 		
 		for(int i = 0; i < filtered.getWidth(); i++) {
@@ -165,7 +165,7 @@ public class ImageFilterCtrl {
 		
 		dImage = w.draw(test);
 		try {
-			Thread.sleep(50);
+			Thread.sleep(value);
 		} catch (InterruptedException e) {
 			// @TODO Auto-generated catch block
 			e.printStackTrace();

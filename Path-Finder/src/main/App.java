@@ -247,8 +247,15 @@ public class App extends JFrame{
 		protected String doInBackground() throws Exception {
 			walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
 			
+			String userInput = JOptionPane.showInputDialog(tmpframe, "Please enter a Number for Waiting on Path Finder", "" + 127);
+			int value = Integer.parseInt(userInput);
+			
+			if(value < 0) {
+				value = 0;
+			}
+			
 			while(!walg.step(10)) {
-				ctrl.applyWalg(walg);
+				ctrl.applyWalg(walg, value);
 				publish(ctrl.getdImage());
 			}
 			
