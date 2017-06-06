@@ -1,7 +1,10 @@
 package main;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import main.filter.ObstacelFinder;
@@ -14,13 +17,67 @@ import main.filter.ObstacelFinder;
 public class ImageFilterCtrl {
 
 	private ImagePanel source, target;
-	
 	private BufferedImage scaled, filtered , dImage;
+	private int startX, startY, endX, endY;
+	private int i;
 	
 	/** Creates new controller */
 	public ImageFilterCtrl(ImagePanel source, ImagePanel target) {
 		this.source = source;
 		this.target = target;
+		this.i = 1;
+		
+		this.target.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// @TODO Auto-generated method stub
+				Dimension dim = target.getPreferredSize();
+				
+				if(i == 1) {
+					startX = (dim.width-target.getBufferedImage().getWidth()) / 2;
+					startX += arg0.getX();
+					
+					startY = (dim.height-target.getBufferedImage().getHeight()) / 2;
+					startY += arg0.getY();
+				} else {
+					if(i == 2) {
+						endX = (dim.width-target.getBufferedImage().getWidth()) / 2;
+						endX += arg0.getX();
+						
+						endY = (dim.height-target.getBufferedImage().getHeight()) / 2;
+						endY += arg0.getY();
+					}
+				}
+				
+				i++;
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// @TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// @TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// @TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// @TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	/** Loads a new Image into this controller and displays it in the source panel */
@@ -97,6 +154,22 @@ public class ImageFilterCtrl {
 	
 	public BufferedImage getFiltered() {
 		return filtered;
+	}
+
+	public int getStartX() {
+		return startX;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public int getEndX() {
+		return endX;
+	}
+
+	public int getEndY() {
+		return endY;
 	}
 	
 	/** Sets filtered image as source image in order to apply further filters *//*
