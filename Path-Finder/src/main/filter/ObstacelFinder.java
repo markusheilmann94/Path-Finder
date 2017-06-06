@@ -4,7 +4,6 @@ package main.filter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import main.StartAndEndPoint;
-import main.PathPoint;
 
 
 public class ObstacelFinder {

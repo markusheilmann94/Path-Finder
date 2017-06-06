@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +37,7 @@ public class App extends JFrame{
 	private ImageFilterCtrl ctrl;
 	private BufferedImage source;
 	private Walgorithmus walg;
-	private StartAndEndPoint p = new StartAndEndPoint();
+	private StartAndEndPoint p;
 	
 	public App() {
 		super("Path Finder");
@@ -85,6 +83,7 @@ public class App extends JFrame{
 					source = loadImage(f);
 					ctrl.loadImage(source);
 					ctrl.setI(1);
+					p = new StartAndEndPoint();
 				}
 			}
 		});
@@ -96,7 +95,7 @@ public class App extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ObstacelFinder t = new ObstacelFinder();
-				p = ctrl.applyStartandEndPointFinding( t );
+				p = ctrl.applyStartandEndPointFinding( t, tmpframe );
 			}
 		});
 		menu.add( FindStartAndEndPoint );
@@ -107,6 +106,8 @@ public class App extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// @TODO Auto-generated method stub
 				p = new StartAndEndPoint(ctrl.getStartX(), ctrl.getStartY(), ctrl.getEndX(), ctrl.getEndY());
+				String message = "Startpoint: x="+ p.getstartx() + " px, y="+ p.getstarty() + " px\nEndpoint: x=" +p.getendx() + " px, y=" + p.getendy() + " px";;
+				JOptionPane.showMessageDialog(tmpframe, message);
 			}
 			
 		});
@@ -152,11 +153,18 @@ public class App extends JFrame{
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
 		      
 				while(!walg.step(10)) {
 					ctrl.applyWalg(walg);
+				}
+				
+				if(walg.step(1) && walg.foundPath()) {
+					JOptionPane.showMessageDialog(tmpframe, "Algorithm found a path successfully!");
+				} else {
+					if(walg.step(1)){
+						JOptionPane.showMessageDialog(tmpframe, "Algorithm did not find a path!");
+					}
 				}
 			}
 		});

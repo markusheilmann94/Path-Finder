@@ -7,6 +7,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import main.filter.ObstacelFinder;
 
 /**
@@ -45,7 +48,6 @@ public class ImageFilterCtrl {
 						startY -= arg0.getY();
 						startY *= -1;
 					}
-					System.out.println(startX + " " + startY);
 				} else {
 					if(i == 2) {
 						endX = (dim.width-target.getBufferedImage().getWidth()) / 2;
@@ -59,7 +61,6 @@ public class ImageFilterCtrl {
 							endY -= arg0.getY();
 							endY *= -1;
 						}
-						System.out.println(endX + " " + endY);
 					}
 				} 
 				i++;
@@ -123,15 +124,21 @@ public class ImageFilterCtrl {
 	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
 	
 	
-	public StartAndEndPoint applyStartandEndPointFinding(ObstacelFinder t ) {
+	public StartAndEndPoint applyStartandEndPointFinding(ObstacelFinder t, JFrame frame ) {
 		
 		StartAndEndPoint p = new StartAndEndPoint();
 		boolean foundPoints;
+		String message;
 		
 		foundPoints = t.findStartAndEndPoint( scaled , p );
 		
+		if(foundPoints) {
+			message = "Startpoint: x="+ p.getstartx() + " px, y="+ p.getstarty() + " px\nEndpoint: x=" +p.getendx() + " px, y=" + p.getendy() + " px";
+		} else {
+			message = "Start- and Endpoint were not found!";
+		}
 		
-		System.out.println( foundPoints + " " + p.getstartx() + " " + p.getstarty() + " " + p.getendx() + " " + p.getendy() );
+		JOptionPane.showMessageDialog(frame, message);
 		
 		return p;
 	}
