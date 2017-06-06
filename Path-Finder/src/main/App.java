@@ -2,7 +2,6 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -16,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
 
 import main.filter.ObstacelFinder;
@@ -55,7 +53,7 @@ public class App extends JFrame{
 		JMenu menu = new JMenu("Menu");
 		
 		
-
+		JToggleButton toggle = new JToggleButton("Terrain", false);
 		
 		
 		
@@ -139,17 +137,11 @@ public class App extends JFrame{
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				walg = new Walgorithmus(ctrl.getFiltered(), new StartAndEndPoint( 0 , 0 , 200 , 200 ), 3 );
-				Timer timer = new Timer(1000, new ActionListener() {
-		            @Override
-		            public void actionPerformed(ActionEvent e) {
-		            	while(!walg.step(10)) {
-							ctrl.applyWalg(walg);
-						}
-		            }
-		        });
-				
-		        timer.start();
+				walg = new Walgorithmus(ctrl.getFiltered(), new StartAndEndPoint( 0 , 0 , 400 , 400 ), 3, toggle.isSelected());
+		      
+				while(!walg.step(10)) {
+					ctrl.applyWalg(walg);
+				}
 			}
 		});
 		
@@ -169,7 +161,7 @@ public class App extends JFrame{
 		});
 		menu.add(exit);
 		bar.add(menu);
-	
+		bar.add(toggle);
 		
 		JPanel imagingPanel = new JPanel();
 		imagingPanel.setLayout(new BoxLayout(imagingPanel, BoxLayout.Y_AXIS));

@@ -46,7 +46,10 @@ public class ImageFilterCtrl {
 		//scaled = Tools.scale(img, App.PANEL_SIZES.width, App.PANEL_SIZES.height, 90);
 		source.loadImage(scaled);
 		target.loadImage(scaled);
-		filtered = scaled;
+		filtered = new BufferedImage(w, h, type);
+		g = filtered.createGraphics();
+		g.drawImage(tmp, 0, 0, null);
+		g.dispose();
 	}
 	
 	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
@@ -60,9 +63,6 @@ public class ImageFilterCtrl {
 		foundPoints = t.findStartAndEndPoint( scaled , p );
 		
 		System.out.println( foundPoints + " " + p.getstartx() + " " + p.getstarty() + " " + p.getendx() + " " + p.getendy() );
-		
-		
-
 	}
 	
 	public void applyFilter(ObstacelFinder t, int thresold) {
@@ -79,26 +79,24 @@ public class ImageFilterCtrl {
 	
 	
 	public void applyWalg(Walgorithmus w) {
-		
-		
-		while(!w.step(10)){
+		while(!w.step(10)) {
 			
 		}
-		dImage = w.draw(filtered);
+		BufferedImage test = new BufferedImage(filtered.getWidth(), filtered.getHeight(), filtered.getType());
+		
+		for(int i = 0; i < filtered.getWidth(); i++) {
+			for(int j = 0; j < filtered.getHeight(); j++) {
+				test.setRGB(i, j, filtered.getRGB(i, j));
+			}
+		}
+		
+		dImage = w.draw(test);
 		dImage = w.drawPath(dImage);
-		
-		
-		
 		target.loadImage(dImage);
-		
 	}
 	
 	public BufferedImage getFiltered() {
 		return filtered;
-	}
-	
-	public ImagePanel getImageTarget() {
-		return target;
 	}
 	
 	/** Sets filtered image as source image in order to apply further filters *//*
