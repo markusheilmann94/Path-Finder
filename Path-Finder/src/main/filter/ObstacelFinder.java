@@ -3,13 +3,13 @@ package main.filter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+import main.StartAndEndPoint;
 import main.PathPoint;
 
 
-public class Threshold {
+public class ObstacelFinder {
 
-    public BufferedImage thImage(BufferedImage img, int requiredTH) {
+    public BufferedImage ObstacelFinding(BufferedImage img, int requiredTH) {
         int height = img.getHeight();
         int width = img.getWidth();
 
@@ -35,13 +35,13 @@ public class Threshold {
                 blue = color.getBlue();
                 if ((red + green + blue) / 3 < requiredTH) {
                 
-					for(int pY = 0 ; pY < 3 ; pY++ ) {
-						for(int pX = 0 ; pX < 3 ; pX++ ) {
+					for(int pY = 0 ; pY < 5 ; pY++ ) {
+						for(int pX = 0 ; pX < 5 ; pX++ ) {
 							
-							if( ( x + pX -1 ) >= 0 && ( x + pX -1 ) < width && ( y + pY -1 ) >= 0 && ( y + pY -1 ) < height && !( ( pX == 1 ) && ( pY == 1 ) ) ) {
+							if( ( x + pX -2 ) >= 0 && ( x + pX -2 ) < width && ( y + pY -2 ) >= 0 && ( y + pY -2 ) < height && !( ( pX == 2 ) && ( pY == 2 ) ) ) {
 							
 								
-			                color = new Color(img.getRGB( ( x + pX -1 ) , ( y + pY -1 ) ) );
+			                color = new Color(img.getRGB( ( x + pX -2 ) , ( y + pY -2 ) ) );
 			                red = color.getRed();
 			                green = color.getGreen();
 			                blue = color.getBlue();
@@ -84,5 +84,70 @@ public class Threshold {
         }
 
         return convertedImage;
+    }
+    
+    
+    
+    public BufferedImage completObstacelFinding( BufferedImage preProcessed , BufferedImage orignalPicture ) {
+ 
+    	int height = preProcessed.getHeight();
+        int width = preProcessed.getWidth();
+        Color white = new Color( 255 , 255 , 255 );
+        
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+            	
+            	if( preProcessed.getRGB(x, y) == white.getRGB() ) {
+            		
+            		preProcessed.setRGB(x, y, orignalPicture.getRGB(x, y) );
+            		
+            	}
+            	
+            	
+            }
+        }   
+    
+        return preProcessed;
+    }
+    
+    public boolean findStartAndEndPoint( BufferedImage originalP , StartAndEndPoint p) {
+    	
+    	boolean foundStartPoint = false;
+    	boolean foundEndPinot = false;
+    	int height = originalP.getHeight();
+        int width = originalP.getWidth();
+    	Color currentPixelColor;
+        
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+    	
+            	currentPixelColor = new Color( originalP.getRGB( x , y ) );
+            	
+            	if( !foundStartPoint && currentPixelColor.getRed() >= 252 && currentPixelColor.getGreen() >= 252 && currentPixelColor.getBlue() >= 124 && currentPixelColor.getBlue() <= 130 ) {
+            		
+            		p.setstartx( x );
+            		p.setstarty( y );
+            		
+            		foundStartPoint = true;
+            		
+            		       		
+            	}
+            	
+            	if( !foundEndPinot && currentPixelColor.getRed() >= 124 && currentPixelColor.getRed() <= 130 && currentPixelColor.getGreen() >= 252 && currentPixelColor.getBlue() >= 252 ) {
+            		
+            		p.setendx( x );
+            		p.setendy( y );
+            		
+            		foundEndPinot = true;
+	
+           	
+            	}
+            	         	
+            	
+            }
+        }
+    	
+        return ( foundStartPoint && foundEndPinot );
+    	
     }
 }

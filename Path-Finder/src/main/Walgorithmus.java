@@ -3,6 +3,7 @@ package main;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.awt.Color;
 
 public class Walgorithmus {
 
@@ -11,16 +12,17 @@ public class Walgorithmus {
 	int pixelBreiteDesBlocks;
 	double[][] m;
 	List<PathPoint> open;
+	boolean terrainAware;
 	
-	public Walgorithmus( BufferedImage image , int sx , int sy , int ex , int ey , int pb ) {
+	public Walgorithmus( BufferedImage image , StartAndEndPoint p , int pb ) {
 		
 		img = image;
 		pixelBreiteDesBlocks = pb;
-		startx = sx/pixelBreiteDesBlocks;
-		starty = sy/pixelBreiteDesBlocks;
-		endx = ex/pixelBreiteDesBlocks;
-		endy = ey/pixelBreiteDesBlocks;
-		
+		startx = p.getstartx()/pixelBreiteDesBlocks;
+		starty = p.getstarty()/pixelBreiteDesBlocks;
+		endx = p.getendx()/pixelBreiteDesBlocks;
+		endy = p.getendy()/pixelBreiteDesBlocks;
+		terrainAware = true;
 	
 		
 		m = new double[img.getHeight()/pixelBreiteDesBlocks][img.getWidth()/pixelBreiteDesBlocks];
@@ -39,7 +41,7 @@ public class Walgorithmus {
 		
 		open.add(new PathPoint(startx,starty, Math.sqrt( Math.pow((endx - startx), 2) + Math.pow((endy - starty), 2)) ) ); // Startpunkt
 		
-	
+		
 	}
 	
 	
@@ -50,8 +52,8 @@ public class Walgorithmus {
 			
 				if( m[i][j] >=0 ) {
 					
-					for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
-						for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
+					for(int blockY = 0 ; blockY < ( pixelBreiteDesBlocks - 1 ) ; blockY++) {
+						for(int blockX = 0 ; blockX < ( pixelBreiteDesBlocks - 1 ) ; blockX++) {
 						
 							image.setRGB( ( j * pixelBreiteDesBlocks + blockX ) , ( i * pixelBreiteDesBlocks + blockY ) , 0xFFFF1111 );
 					
@@ -66,8 +68,8 @@ public class Walgorithmus {
 			
 			
 			
-			for(int blockY = 0 ; blockY < pixelBreiteDesBlocks ; blockY++) {
-				for(int blockX = 0 ; blockX < pixelBreiteDesBlocks ; blockX++) {
+			for(int blockY = 0 ; blockY < ( pixelBreiteDesBlocks - 1 ) ; blockY++) {
+				for(int blockX = 0 ; blockX < ( pixelBreiteDesBlocks - 1 ) ; blockX++) {
 				
 					image.setRGB( ( point.getx() * pixelBreiteDesBlocks + blockX ) , ( point.gety() * pixelBreiteDesBlocks + blockY ) , 0xFF1111FF );
 			
@@ -123,14 +125,11 @@ public class Walgorithmus {
 		
 		}
 		
-		
-		
-		
+
 		return img;
 	}
 	
-	
-	
+
 	private boolean inOpen( int x , int y ) {
 		
 		boolean includet = false;
@@ -143,14 +142,11 @@ public class Walgorithmus {
 				
 			}
 		
-		
-		
 		}
 		
 		return includet;
 		
 	}
-	
 	
 	
 	public boolean foundPath() {
@@ -167,15 +163,12 @@ public class Walgorithmus {
 		
 	}
 	
-	
-	
-	
-	
-	
+
 	public boolean step(int stepCount) {
 		
 		PathPoint currentPoint;
 		boolean notAtEnd = true;
+		double t;
 		
 		for(int i = 0 ; i < stepCount ; i++) {
 			
@@ -200,7 +193,7 @@ public class Walgorithmus {
 					for(int blockY = 0 ; blockY < 3 ; blockY++ ) {
 						for(int blockX = 0 ; blockX < 3 ; blockX++ ) {
 							
-							if( (currentPoint.getx() + blockX - 1) >= 0 && (currentPoint.getx() + blockX - 1) < m[0].length && (currentPoint.gety() + blockY - 1) >= 0 && (currentPoint.gety() + blockY - 1) < m[0].length && walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && ( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || inOpen( ( currentPoint.getx() + blockX - 1 ) , ( currentPoint.gety() + blockY - 1 ) ) ) ) {
+							if( (currentPoint.getx() + blockX - 1) >= 0 && (currentPoint.getx() + blockX - 1) < m[0].length && (currentPoint.gety() + blockY - 1) >= 0 && (currentPoint.gety() + blockY - 1) < m.length && walkable(currentPoint.getx() + blockX - 1 , currentPoint.gety() + blockY - 1 ) && ( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || inOpen( ( currentPoint.getx() + blockX - 1 ) , ( currentPoint.gety() + blockY - 1 ) ) ) ) {
 								
 								if(  m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0  ) {
 									
@@ -208,22 +201,22 @@ public class Walgorithmus {
 									
 								}
 								
+								t = terrainAwarness( currentPoint.getx() + blockX - 1 , currentPoint.gety()+ blockY - 1 );
+								
 								if(blockY == 1 || blockX ==1 ) {
 								
-									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + 1 ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) ) ) {
-										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + 1;
+									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + ( 1 * t )  ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) ) ) {
+										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + ( 1 * t );
 									}
 								
 								}
 								else {
 									
-									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2) ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) )) {
-										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + Math.sqrt(2);
+									if( ( m[currentPoint.gety() + blockY - 1 ][currentPoint.getx() + blockX - 1] < 0 ) || ( ( m[currentPoint.gety()][currentPoint.getx()] + ( Math.sqrt(2) * t ) ) < ( m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] ) )) {
+										m[currentPoint.gety()+ blockY - 1 ][currentPoint.getx() + blockX - 1] =	 m[currentPoint.gety()][currentPoint.getx()] + ( Math.sqrt(2) * t );
 									}
 									
-								}
-								
-									
+								}		
 									
 							}
 			
@@ -245,7 +238,48 @@ public class Walgorithmus {
 				
 	}
 	
+	public void setTerrainAware( boolean value ) {
+		
+		terrainAware = value;
+			
+	}
 	
+
+	private double terrainAwarness( int x , int y ) {
+		
+		double multiplikator;
+		int highestValue;
+		
+		if( terrainAware ) {
+		
+		Color c = new Color( img.getRGB( ( x * pixelBreiteDesBlocks ) , ( y * pixelBreiteDesBlocks  ) ) );
+		
+		
+		if( c.getRed() > c.getGreen() ) {
+			
+			highestValue = c.getGreen();
+		}
+		else {
+			
+			highestValue = c.getRed();
+		}
+		
+		if( highestValue > c.getBlue() ) {
+			
+			highestValue = c.getBlue();
+		}
+		
+		multiplikator = ( 50.0 / ( highestValue + 1 ) ) + 0.82;
+		
+		}
+		else {
+			
+			multiplikator = 1.0;
+		}
+		
+		return multiplikator;
+		
+	}
 	
 	private boolean walkable( int x , int y ) {
 			

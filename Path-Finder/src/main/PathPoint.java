@@ -2,8 +2,8 @@ package main;
 
 public class PathPoint {
 
-	int x , y ;
-	double costRemaningDirectWay;
+	final int x , y ;
+	final double costRemaningDirectWay;
 	
 	public PathPoint(int x , int y , double costRemaningDirectWay) {
 		this.x = x;

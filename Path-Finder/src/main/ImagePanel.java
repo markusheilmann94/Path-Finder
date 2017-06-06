@@ -43,7 +43,7 @@ public class ImagePanel extends JPanel{
 		return getPreferredSize();
 	}
 	
-	@Override
+	@Override 
 	public Dimension getMaximumSize() {
 		return getPreferredSize();
 	}

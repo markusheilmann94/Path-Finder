@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import main.filter.Threshold;
+import main.filter.ObstacelFinder;
 
 /**
  * Controls the Image Filter app
@@ -49,14 +49,46 @@ public class ImageFilterCtrl {
 	}
 	
 	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
-	public void applyFilter(Threshold t, int thresold) {
-		filtered = t.thImage(scaled, thresold);
+	
+	
+	public void applyStartandEndPointFinding(ObstacelFinder t) {
+		
+		StartAndEndPoint p = new StartAndEndPoint();
+		boolean foundPoints;
+		
+		foundPoints = t.findStartAndEndPoint( scaled , p );
+		
+		System.out.println( foundPoints + " " + p.getstartx() + " " + p.getstarty() + " " + p.getendx() + " " + p.getendy() );
+		
+		
+
+	}
+	
+	public void applyFilter(ObstacelFinder t, int thresold) {
+		filtered = t.ObstacelFinding(scaled, thresold);
 		target.loadImage(filtered);
 	}
 
+	
+	public void applyCompletFinding(ObstacelFinder t) {
+		filtered = t.completObstacelFinding(filtered, scaled);
+		target.loadImage(filtered);
+	}
+
+	
+	
 	public void applyWalg(Walgorithmus w) {
+		
+		
+		while(!w.step(10)){
+			
+		}
 		dImage = w.draw(filtered);
-		target.setBufferedImage(dImage);
+		dImage = w.drawPath(dImage);
+		
+		
+		
+		target.loadImage(dImage);
 		
 	}
 	

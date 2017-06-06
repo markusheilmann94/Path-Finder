@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
-import main.filter.Threshold;
+import main.filter.ObstacelFinder;
 
 public class App extends JFrame{
 
@@ -52,6 +53,11 @@ public class App extends JFrame{
 
 		JMenuBar bar = new JMenuBar();
 		JMenu menu = new JMenu("Menu");
+		
+		
+
+		
+		
 		
 		JMenuItem load = new JMenuItem("Load");
 		final JFrame tmpframe = this;
@@ -82,22 +88,50 @@ public class App extends JFrame{
 		});
 		menu.add(load);
 		
-		JMenuItem thresold = new JMenuItem("ThresoldFilter");
+		JMenuItem FindStartAndEndPoint = new JMenuItem("Find Startpoint and Endpoint");
+		FindStartAndEndPoint.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ObstacelFinder t = new ObstacelFinder();
+				ctrl.applyStartandEndPointFinding( t );
+			}
+		});
+		menu.add( FindStartAndEndPoint );
+	
+		
+		JMenuItem thresold = new JMenuItem("Find Obstacels");
 		thresold.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Threshold t = new Threshold();
+				ObstacelFinder t = new ObstacelFinder();
 				ctrl.applyFilter(t, 127);
 			}
 		});
 		menu.add(thresold);
+	
+	
 		
+		JMenuItem completFinding = new JMenuItem("complet Obstacel Finding");
+		completFinding.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ObstacelFinder t = new ObstacelFinder();
+				ctrl.applyCompletFinding( t );
+			}
+		});
+		menu.add( completFinding );
+	
+		
+		
+	
 		JMenuItem item = new JMenuItem("Start");
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				walg = new Walgorithmus(ctrl.getFiltered(), 0, 0, 400, 400, 3);
+				walg = new Walgorithmus(ctrl.getFiltered(), new StartAndEndPoint( 0 , 0 , 200 , 200 ), 3 );
 				Timer timer = new Timer(1000, new ActionListener() {
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
@@ -127,6 +161,7 @@ public class App extends JFrame{
 		});
 		menu.add(exit);
 		bar.add(menu);
+	
 		
 		JPanel imagingPanel = new JPanel();
 		imagingPanel.setLayout(new BoxLayout(imagingPanel, BoxLayout.Y_AXIS));
