@@ -46,6 +46,7 @@ public class ImageFilterCtrl {
 		//scaled = Tools.scale(img, App.PANEL_SIZES.width, App.PANEL_SIZES.height, 90);
 		source.loadImage(scaled);
 		target.loadImage(scaled);
+		filtered = scaled;
 	}
 	
 	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
