@@ -55,14 +55,17 @@ public class ImageFilterCtrl {
 	/** Applies a filter to the loaded source image and shows the generated image in the target panel */
 	
 	
-	public void applyStartandEndPointFinding(ObstacelFinder t) {
+	public StartAndEndPoint applyStartandEndPointFinding(ObstacelFinder t ) {
 		
 		StartAndEndPoint p = new StartAndEndPoint();
 		boolean foundPoints;
 		
 		foundPoints = t.findStartAndEndPoint( scaled , p );
 		
+		
 		System.out.println( foundPoints + " " + p.getstartx() + " " + p.getstarty() + " " + p.getendx() + " " + p.getendy() );
+		
+		return p;
 	}
 	
 	public void applyFilter(ObstacelFinder t, int thresold) {
