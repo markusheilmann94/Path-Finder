@@ -37,6 +37,7 @@ public class App extends JFrame{
 	private ImageFilterCtrl ctrl;
 	private BufferedImage source;
 	private Walgorithmus walg;
+	private StartAndEndPoint p = new StartAndEndPoint();
 	
 	public App() {
 		super("Path Finder");
@@ -92,7 +93,7 @@ public class App extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ObstacelFinder t = new ObstacelFinder();
-				ctrl.applyStartandEndPointFinding( t );
+				p = ctrl.applyStartandEndPointFinding( t );
 			}
 		});
 		menu.add( FindStartAndEndPoint );
@@ -137,7 +138,7 @@ public class App extends JFrame{
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				walg = new Walgorithmus(ctrl.getFiltered(), new StartAndEndPoint( 0 , 0 , 400 , 400 ), 3, toggle.isSelected());
+				walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
 		      
 				while(!walg.step(10)) {
 					ctrl.applyWalg(walg);
