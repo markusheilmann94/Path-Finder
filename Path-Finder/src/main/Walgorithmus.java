@@ -14,7 +14,7 @@ public class Walgorithmus {
 	List<PathPoint> open;
 	boolean terrainAware;
 	
-	public Walgorithmus( BufferedImage image , StartAndEndPoint p , int pb ) {
+	public Walgorithmus( BufferedImage image , StartAndEndPoint p , int pb , boolean tA ) {
 		
 		img = image;
 		pixelBreiteDesBlocks = pb;
@@ -22,7 +22,7 @@ public class Walgorithmus {
 		starty = p.getstarty()/pixelBreiteDesBlocks;
 		endx = p.getendx()/pixelBreiteDesBlocks;
 		endy = p.getendy()/pixelBreiteDesBlocks;
-		terrainAware = true;
+		terrainAware = tA;
 	
 		
 		m = new double[img.getHeight()/pixelBreiteDesBlocks][img.getWidth()/pixelBreiteDesBlocks];
