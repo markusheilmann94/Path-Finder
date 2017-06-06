@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,12 +84,13 @@ public class App extends JFrame{
 					File f = fc.getSelectedFile();
 					source = loadImage(f);
 					ctrl.loadImage(source);
+					ctrl.setI(1);
 				}
 			}
 		});
 		menu.add(load);
 		
-		JMenuItem FindStartAndEndPoint = new JMenuItem("Find Startpoint and Endpoint");
+		JMenuItem FindStartAndEndPoint = new JMenuItem("Find Startpoint and Endpoint by Color");
 		FindStartAndEndPoint.addActionListener(new ActionListener() {
 
 			@Override
@@ -98,6 +101,17 @@ public class App extends JFrame{
 		});
 		menu.add( FindStartAndEndPoint );
 	
+		JMenuItem find = new JMenuItem("Use the first 2 Mouseclicks after load image for Start and End");
+		find.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// @TODO Auto-generated method stub
+				p = new StartAndEndPoint(ctrl.getStartX(), ctrl.getStartY(), ctrl.getEndX(), ctrl.getEndY());
+			}
+			
+		});
+		menu.add(find);
+		
 		final JFrame tmp = this;
 		JMenuItem thresold = new JMenuItem("Find Obstacels");
 		thresold.addActionListener(new ActionListener() {
@@ -138,6 +152,7 @@ public class App extends JFrame{
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
 		      
 				while(!walg.step(10)) {

@@ -27,8 +27,7 @@ public class ImageFilterCtrl {
 		this.target = target;
 		this.i = 1;
 		
-		this.target.addMouseListener(new MouseListener() {
-
+		target.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// @TODO Auto-generated method stub
@@ -36,20 +35,33 @@ public class ImageFilterCtrl {
 				
 				if(i == 1) {
 					startX = (dim.width-target.getBufferedImage().getWidth()) / 2;
-					startX += arg0.getX();
-					
 					startY = (dim.height-target.getBufferedImage().getHeight()) / 2;
-					startY += arg0.getY();
+					
+					if(arg0.getX() >= startX && arg0.getX() <= (startX + target.getBufferedImage().getWidth())) {
+						startX -= arg0.getX();
+						startX *= -1;
+					}
+					if(arg0.getY() >= startY && arg0.getY() <= (startY + target.getBufferedImage().getHeight())) {
+						startY -= arg0.getY();
+						startY *= -1;
+					}
+					System.out.println(startX + " " + startY);
 				} else {
 					if(i == 2) {
 						endX = (dim.width-target.getBufferedImage().getWidth()) / 2;
-						endX += arg0.getX();
-						
 						endY = (dim.height-target.getBufferedImage().getHeight()) / 2;
-						endY += arg0.getY();
+						
+						if(arg0.getX() >= endX && arg0.getX() <= (endX + target.getBufferedImage().getWidth())) {
+							endX -= arg0.getX();
+							endX *= -1;
+						}
+						if(arg0.getY() >= endY && arg0.getY() <= (endY + target.getBufferedImage().getHeight())) {
+							endY -= arg0.getY();
+							endY *= -1;
+						}
+						System.out.println(endX + " " + endY);
 					}
-				}
-				
+				} 
 				i++;
 			}
 
@@ -76,7 +88,6 @@ public class ImageFilterCtrl {
 				// @TODO Auto-generated method stub
 				
 			}
-			
 		});
 	}
 	
@@ -174,7 +185,10 @@ public class ImageFilterCtrl {
 	public int getEndY() {
 		return endY;
 	}
-	
+
+	public void setI(int i) {
+		this.i = i;
+	}
 	/** Sets filtered image as source image in order to apply further filters *//*
 	public void setTargetAsSource() {
 		scaled = target.getBufferedImage();
