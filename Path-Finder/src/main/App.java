@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -24,6 +25,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
 import main.filter.ObstacelFinder;
@@ -38,6 +41,8 @@ public class App extends JFrame{
 	private BufferedImage source;
 	private Walgorithmus walg;
 	private StartAndEndPoint p;
+	private final JFrame tmpframe = this;
+	private JToggleButton toggle;
 	
 	public App() {
 		super("Path Finder");
@@ -54,12 +59,11 @@ public class App extends JFrame{
 		JMenu menu = new JMenu("Menu");
 		
 		
-		JToggleButton toggle = new JToggleButton("Terrain", false);
+		toggle = new JToggleButton("Terrain", false);
 		
 		
 		
 		JMenuItem load = new JMenuItem("Load");
-		final JFrame tmpframe = this;
 		
 		load.addActionListener(new ActionListener() {
 
@@ -153,19 +157,7 @@ public class App extends JFrame{
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
-		      
-				while(!walg.step(10)) {
-					ctrl.applyWalg(walg);
-				}
-				
-				if(walg.step(1) && walg.foundPath()) {
-					JOptionPane.showMessageDialog(tmpframe, "Algorithm found a path successfully!");
-				} else {
-					if(walg.step(1)){
-						JOptionPane.showMessageDialog(tmpframe, "Algorithm did not find a path!");
-					}
-				}
+				new Worker().execute();
 			}
 		});
 		
@@ -242,7 +234,37 @@ public class App extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		App window = new App();
-		window.launch();
+		SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+        		App window = new App();
+        		window.launch();
+            }
+        });
+	}
+	
+	private class Worker extends SwingWorker<String, BufferedImage>{
+		@Override
+		protected String doInBackground() throws Exception {
+			walg = new Walgorithmus(ctrl.getFiltered(), p , 3, toggle.isSelected());
+			
+			while(!walg.step(10)) {
+				ctrl.applyWalg(walg);
+				publish(ctrl.getdImage());
+			}
+			
+			publish(walg.drawPath(ctrl.getdImage()));
+			if(walg.step(1) && walg.foundPath()) {
+				JOptionPane.showMessageDialog(tmpframe, "Algorithm found a path successfully!");
+			} else {
+				if(walg.step(1)){
+					JOptionPane.showMessageDialog(tmpframe, "Algorithm did not find a path!");
+				}
+			}
+			return null;
+		}
+
+		protected void process(List<BufferedImage> item) {
+			targetImage.setBufferedImage(item.get(item.size()-1));
+	    }
 	}
 }

@@ -154,12 +154,7 @@ public class ImageFilterCtrl {
 		target.loadImage(filtered);
 	}
 
-	
-	
 	public void applyWalg(Walgorithmus w) {
-		while(!w.step(10)) {
-			
-		}
 		BufferedImage test = new BufferedImage(filtered.getWidth(), filtered.getHeight(), filtered.getType());
 		
 		for(int i = 0; i < filtered.getWidth(); i++) {
@@ -169,14 +164,29 @@ public class ImageFilterCtrl {
 		}
 		
 		dImage = w.draw(test);
-		dImage = w.drawPath(dImage);
-		target.loadImage(dImage);
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// @TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	//	dImage = w.drawPath(dImage);
+	//	target.loadImage(dImage);
+	}
+	
+	public void setImage(BufferedImage img) {
+		target.loadImage(img);
 	}
 	
 	public BufferedImage getFiltered() {
 		return filtered;
 	}
 
+	public BufferedImage getdImage() {
+		return dImage;
+	}
+	
 	public int getStartX() {
 		return startX;
 	}
