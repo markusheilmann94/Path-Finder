@@ -99,14 +99,22 @@ public class App extends JFrame{
 		});
 		menu.add( FindStartAndEndPoint );
 	
-		
+		final JFrame tmp = this;
 		JMenuItem thresold = new JMenuItem("Find Obstacels");
 		thresold.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ObstacelFinder t = new ObstacelFinder();
-				ctrl.applyFilter(t, 127);
+				String msg = "Please enter a value for the Thresold (0-255)";
+				
+				String userInput = JOptionPane.showInputDialog(tmp, msg, "" + 127);
+				int value = Integer.parseInt(userInput);
+				
+				if(value < 0 || value > 255) {
+					value = 127;
+				}
+				ctrl.applyFilter(t, value);
 			}
 		});
 		menu.add(thresold);
