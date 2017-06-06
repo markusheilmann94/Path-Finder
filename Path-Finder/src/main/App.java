@@ -195,7 +195,7 @@ public class App extends JFrame{
 		getContentPane().add(imagingPanel, BorderLayout.CENTER);
 		
 		JPanel legende = new JPanel();
-		JLabel label = new JLabel(new ImageIcon("Legende (1).png"));
+		JLabel label = new JLabel(new ImageIcon("Legende_für_Path_Finder_2.png"));
 		legende.setLayout(new BoxLayout(legende, BoxLayout.X_AXIS));
 		
 		Box l = Box.createVerticalBox();
